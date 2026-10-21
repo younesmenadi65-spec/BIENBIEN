@@ -53,6 +53,7 @@ export default function MapPage() {
       return n;
     });
 
+  // Vue plein écran d'une lineup : instructions en grand, petite carte flottante
   if (sel) {
     return (
       <div className="fullview">
