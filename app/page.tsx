@@ -1,4 +1,3 @@
-
 export default function Home() {
   return (
     <main
@@ -9,9 +8,10 @@ export default function Home() {
         minHeight: "calc(100vh - 53px)",
         display: "flex",
         flexDirection: "column",
+        textAlign: "center",
       }}
     >
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <h1 style={{ fontFamily: "var(--font-head)", fontSize: 56, margin: 0, lineHeight: 1.05 }}>
           Rockford V2B Lineup Hub
         </h1>
@@ -19,7 +19,7 @@ export default function Home() {
           Les techniques et lineups de la communauté pour la map Rockford V2B de Garry’s Mod :
           smokes, flashs et nades, placées directement sur le plan de la ville.
         </p>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 24 }}>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center", marginTop: 24 }}>
           <a className="cta" href="/map" style={{ textDecoration: "none" }}>
             Explorer la map
           </a>
@@ -33,7 +33,7 @@ export default function Home() {
         </div>
       </div>
       <footer style={{ color: "var(--mute)", borderTop: "1px solid var(--line)", paddingTop: 16, marginTop: 40 }}>
-        Créé par Whisky - Chef de spécialité Soldat
+        Créé par Whiskey
       </footer>
     </main>
   );
