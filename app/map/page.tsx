@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import MapView2D from "@/components/MapView2D";
 import LineupDetail from "@/components/LineupDetail";
+import FloatingMap from "@/components/FloatingMap";
 import { supabase, type Category, type Lineup } from "@/lib/supabase";
 
 export default function MapPage() {
@@ -52,62 +53,69 @@ export default function MapPage() {
       return n;
     });
 
-  return (
-    <div className="layout">
-      <aside className="side">
-        {sel ? (
+  if (sel) {
+    return (
+      <div className="fullview">
+        <div className="fulldetail">
           <LineupDetail
             lineup={sel}
             cat={cats.find((c) => c.id === sel.category_id)}
             onClose={() => setSel(null)}
           />
-        ) : (
-          <>
-            <a
-              className="cta"
-              href="/nouvelle"
-              style={{ display: "block", textAlign: "center", textDecoration: "none", marginBottom: 12 }}
-            >
-              Ajouter une lineup
-            </a>
-            <h2>Lineups</h2>
-            <input
-              type="search"
-              placeholder="Rechercher une lineup"
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              style={{
-                width: "100%",
-                padding: 8,
-                background: "var(--bg)",
-                color: "var(--text)",
-                border: "1px solid var(--line)",
-                borderRadius: 6,
-              }}
-            />
-            <div className="chips">
-              {cats.map((c) => (
-                <button key={c.id} className="chip" aria-pressed={!hidden.has(c.id)} onClick={() => toggle(c.id)}>
-                  <span style={{ color: c.color }}>●</span> {c.label}
-                </button>
-              ))}
-            </div>
-            {loading && <p>Chargement…</p>}
-            {error && <p role="alert">{error}</p>}
-            {!loading && !error && shown.length === 0 && (
-              <p>Aucune lineup pour l’instant. Sois le premier à en publier une.</p>
-            )}
-            {shown.map((l) => (
-              <button key={l.id} className="item" onClick={() => setSel(l)}>
-                <strong>{l.title}</strong>
-                <br />
-                <small>{cats.find((c) => c.id === l.category_id)?.label}</small>
-              </button>
-            ))}
-          </>
+        </div>
+        <FloatingMap>
+          <MapView2D lineups={[sel]} categories={cats} selectedId={sel.id} />
+        </FloatingMap>
+      </div>
+    );
+  }
+
+  return (
+    <div className="layout">
+      <aside className="side">
+        <a
+          className="cta"
+          href="/nouvelle"
+          style={{ display: "block", textAlign: "center", textDecoration: "none", marginBottom: 12 }}
+        >
+          Ajouter une lineup
+        </a>
+        <h2>Lineups</h2>
+        <input
+          type="search"
+          placeholder="Rechercher une lineup"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          style={{
+            width: "100%",
+            padding: 8,
+            background: "var(--bg)",
+            color: "var(--text)",
+            border: "1px solid var(--line)",
+            borderRadius: 6,
+          }}
+        />
+        <div className="chips">
+          {cats.map((c) => (
+            <button key={c.id} className="chip" aria-pressed={!hidden.has(c.id)} onClick={() => toggle(c.id)}>
+              <span style={{ color: c.color }}>●</span> {c.label}
+            </button>
+          ))}
+        </div>
+        {loading && <p>Chargement…</p>}
+        {error && <p role="alert">{error}</p>}
+        {!loading && !error && shown.length === 0 && (
+          <p>Aucune lineup pour l’instant. Sois le premier à en publier une.</p>
         )}
+        {shown.map((l) => (
+          <button key={l.id} className="item" onClick={() => setSel(l)}>
+            <strong>{l.title}</strong>
+            <br />
+            <small>{cats.find((c) => c.id === l.category_id)?.label}</small>
+          </button>
+        ))}
       </aside>
-      <MapView2D lineups={shown} categories={cats} selectedId={sel?.id} onSelect={setSel} />
+      <MapView2D lineups={shown} categories={cats} onSelect={setSel} />
     </div>
   );
 }
